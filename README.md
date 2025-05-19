@@ -34,4 +34,3 @@ Resultados
 -Identificar zonas con menor penetración bancaria para tomar decisiones comerciales.
 -Crear productos financieros más personalizados según el comportamiento del cliente.
 -Analizar el crecimiento de clientes o cuentas por año.
--Calcular el lifetime value de un cliente con base en su número de productos y saldo promedio.
