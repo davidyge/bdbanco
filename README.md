@@ -1,5 +1,7 @@
 PERFIL FINANCIERO DE CLIENTES Y DISTRIBUCIÓN DE PRODUCTOS BANCARIOS POR REGIÓN
+
 Descripción del Sistema
+
 Este sistema de base de datos ha sido diseñado para gestionar y analizar de forma estructurada la información financiera de los clientes de una entidad bancaria. Permite registrar y consultar datos relacionados con:
 Los clientes (Natural, juridica)
 Sus cuentas bancarias
@@ -9,6 +11,7 @@ La región geográfica de atención
 Las transacciones realizadas por los clientes
 
 Datos Almacenados:
+
 El modelo contempla las siguientes entidades y relaciones clave:
 Clientes: Contiene información personal, tipo de cliente (natural o jurídica), sueldo mensual y cantidad de productos adquiridos.
 Cuentas: Asocia a los clientes con sus cuentas bancarias, incluyendo tipo de cuenta, número, monto y fecha de apertura.
@@ -19,11 +22,13 @@ Regiones: Define la ubicación geográfica de cada agencia.
 Transacciones: Registra todos los movimientos financieros realizados por los clientes (depósitos, retiros, transferencias, pagos, etc.), asociados a una cuenta específica, con fecha, tipo y monto de transacción.
 
 Objetivo del Modelo:
+
 El propósito principal de este sistema es permitir un análisis integral del comportamiento financiero de los clientes y la distribución de productos en función de variables como:
 Tipo de cliente, región geográfica, agencia bancaria, tipo de cuenta o producto, monto, frecuencia y antigüedad de las cuentas y transacciones.
 Esto facilita la toma de decisiones estratégicas basadas en datos reales.
 
 Análisis y Consultas Clave:
+
 ¿Cuántos productos tiene cada tipo de cliente?	cantidad_productos, tipo_cliente
 ¿Ganan más las personas naturales o las jurídicas?	sueldo_mensual, tipo_cliente
 ¿En qué regiones hay más cuentas activas?	cuentas, agencia, region
@@ -35,9 +40,14 @@ Análisis y Consultas Clave:
 ¿Qué clientes tienen mayor volumen de operaciones?	id_cliente, transacciones, monto
 
 Resultados Esperados:
+
 Mejorar estrategias de marketing segmentadas por tipo de cliente y región
 Identificar zonas con baja penetración financiera
 Personalizar productos financieros según el comportamiento del cliente
 Analizar el crecimiento de clientes, cuentas y transacciones por año
 Detectar patrones de uso de productos y servicios
 Evaluar el riesgo y rentabilidad de los clientes según su historial transaccional
+
+
+![BD-BANCO-2025](https://github.com/user-attachments/assets/aa08b688-adfa-49e3-9aec-93b61a64cab1)
+
