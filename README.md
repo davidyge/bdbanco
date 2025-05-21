@@ -49,6 +49,7 @@ Detectar patrones de uso de productos y servicios
 Evaluar el riesgo y rentabilidad de los clientes según su historial transaccional
 
 
-![BD-BANCO-20252](https://github.com/user-attachments/assets/20d02c01-a0ba-46c6-b2a5-e98edd566b8b)
+![BD-BANCO-2025-10](https://github.com/user-attachments/assets/3b89ebc1-8333-4ffa-8090-b3706992b084)
+
 
 
