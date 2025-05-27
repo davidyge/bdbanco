@@ -48,8 +48,16 @@ Analizar el crecimiento de clientes, cuentas y transacciones por año
 Detectar patrones de uso de productos y servicios
 Evaluar el riesgo y rentabilidad de los clientes según su historial transaccional
 
-
+Diagra entidad relación
 ![BD-BANCO-2025-10](https://github.com/user-attachments/assets/3b89ebc1-8333-4ffa-8090-b3706992b084)
+
+Diseño lógico
+![modelo_logico](https://github.com/user-attachments/assets/60612e59-fbc0-49c4-b029-818965be7e29)
+
+Modelo Físico
+![modelo_fisico](https://github.com/user-attachments/assets/07d46d9d-6e68-478d-ab82-6f5786210dcc)
+
+
 
 
 
