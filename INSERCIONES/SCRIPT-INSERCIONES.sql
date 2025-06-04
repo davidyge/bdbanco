@@ -10,14 +10,19 @@ SELECT * FROM TransaccionesCuenta;
 SELECT * FROM ContratoServicio;
 SELECT * FROM PagoServicio;
 
--- INSERCI覰 DE TABLAS INDEPENDIENTES
--- Regi髇
+-- INSERCI脫N DE TABLAS INDEPENDIENTES
+-- Regi贸n
 INSERT INTO Region (id_region, nombre_region) VALUES
 (1, 'Lima'),
 (2, 'Cusco'),
 (3, 'Arequipa'),
 (4, 'Piura'),
-(5, 'Huanuco');
+(5, 'Huanuco'),
+(6, 'Tacna'),
+(7, 'Ica'),
+(8, 'Chiclayo'),
+(9, 'Puno'),
+(10, 'Tarapoto');
 
 -- Agencia
 INSERT INTO Agencia (id_agencia, id_region, nombre_agencia, direccion) VALUES
@@ -25,82 +30,179 @@ INSERT INTO Agencia (id_agencia, id_region, nombre_agencia, direccion) VALUES
 (2, 2, 'Agencia Cusco', 'Calle Sol 456, Cusco'),
 (3, 3, 'Agencia Arequipa', 'Av. Melgar 789, Arequipa'),
 (4, 4, 'Agencia Piura', 'Jr. Comercio 321, Piura'),
-(5, 5, 'Agencia Huanuco', 'Jr. 28 de julio 820, Huanuco');
+(5, 5, 'Agencia Huanuco', 'Jr. 28 de julio 820, Huanuco'),
+(6, 6, 'Agencia Tacna',     'Av. Bolognesi 100, Tacna'),
+(7, 7, 'Agencia Ica',       'Calle Lima 250, Ica'),
+(8, 8, 'Agencia Chiclayo',  'Av. Balta 455, Chiclayo'),
+(9, 9, 'Agencia Puno',      'Jr. Moquegua 77, Puno'),
+(10,10,'Agencia Tarapoto',  'Av. Alfonso Ugarte 300, Tarapoto');
 
 -- Cliente
+DELETE FROM Cliente;
 INSERT INTO Cliente (id_cliente, nombre, Apellido, dni, fecha_nacimiento, email, telefono) VALUES
 (1, 'Juan', 'Perez', '12345678', '1990-05-10', 'juan@gmail.com', '999111222'),
 (2, 'Ana', 'Lopez', '87654321', '1988-08-15', 'ana@gmail.com', '988777666'),
 (3, 'Carlos', 'Sanchez', '11223344', '1995-03-22', 'carlos@gmail.com', '977888999'),
 (4, 'Lucia', 'Martinez', '44332211', '2000-12-01', 'lucia@gmail.com', '966555444'),
-(5, 'Mario', 'Ramos', '99887766', '1985-01-30', 'mario@gmail.com', '955333111');
+(5, 'Mario', 'Ramos', '99887766', '1985-01-30', 'mario@gmail.com', '955333111'),
+(6, 'Sandra', 'Zevallos', '55667788', '1992-07-14', 'sandra@gmail.com', '944222333'),
+(7, 'Diego',  'Salazar',  '66778899', '1987-11-03', 'diego@gmail.com',  '933444555'),
+(8, 'Rosa',   'Quispe',   '77889900', '1999-02-19', 'rosa@gmail.com',   '922666777'),
+(9, 'Felipe', 'Nu帽ez',    '88990011', '1984-09-27', 'felipe@gmail.com', '911888999'),
+(10,'Elena',  'Castro',   '99001122', '1996-04-05', 'elena@gmail.com',  '900111222');
 
 -- ServiciosFinancieros
 INSERT INTO ServiciosFinancieros (id_servicio, nombre_servicio, tipo_servicio, monto_maximo, tasa_interes) VALUES
-(1, 'Pr閟tamo Personal', 'Cr閐ito', 10000.00, 12.5),
-(2, 'Cr閐ito Hipotecario', 'Hipoteca', 200000.00, 8.75),
-(3, 'Cr閐ito Vehicular', 'Veh韈ulo', 50000.00, 10.0),
-(4, 'Tarjeta Cl醩ica', 'Tarjeta', 5000.00, 20.0),
-(5, 'Tarjeta Oro', 'Tarjeta', 10000.00, 18.0);
+(1, 'Pr茅stamo Personal', 'Cr茅dito', 10000.00, 12.5),
+(2, 'Cr茅dito Hipotecario', 'Hipoteca', 200000.00, 8.75),
+(3, 'Cr茅dito Vehicular', 'Veh铆culo', 50000.00, 10.0),
+(4, 'Tarjeta Cl谩sica', 'Tarjeta', 5000.00, 20.0),
+(5, 'Tarjeta Oro', 'Tarjeta', 10000.00, 18.0),
+(6, 'Cuenta de Ahorro Premier', 'Dep贸sito', 0.00, 0.75),
+(7, 'Seguro de Vida',           'Seguro',   200000.00, 0.00),
+(8, 'Seguro Vehicular',         'Seguro',    80000.00, 0.00),
+(9, 'Plazo Fijo 360 d',         'Inversi贸n', 50000.00, 6.50),
+(10,'Cr茅dito PyME',             'Cr茅dito',  150000.00, 13.0);
 
--- INSERCI覰 DE TABLAS TRANSACCIONALES
--- 
+
+-- INSERCI脫N DE TABLAS TRANSACCIONALES
+-- Cuenta 
+DELETE FROM Cuenta;
 INSERT INTO Cuenta (id_cuenta, id_cliente, id_agencia, tipo_cuenta, saldo, fecha_creacion) VALUES
-(1, 1, 1, 'Ahorro', 1500.00, '2024-01-10'),
-(2, 2, 2, 'Corriente', 3000.00, '2024-02-15'),
-(3, 3, 3, 'Ahorro', 50.00, '2024-03-20'),        -- saldo bajo
-(4, 4, 4, 'Corriente', 100.00, '2024-04-25'),   -- saldo bajo
-(5, 5, 5, 'Ahorro', 1800.00, '2024-05-30'),
-(6, 1, 1, 'Corriente', 0.00, '2024-06-05'),     -- sin saldo
-(7, 2, 2, 'Ahorro', 4000.00, '2024-06-10'),
-(8, 3, 3, 'Corriente', 100.00, '2024-06-15'),
-(9, 4, 4, 'Ahorro', 0.00, '2024-06-20'),        -- sin saldo
-(10, 5, 5, 'Corriente', 1600.00, '2024-06-25');
+(1, 1, 1, 'Ahorro', 1500.00, '2025-01-02'),
+(2, 2, 2, 'Corriente', 3000.00, '2025-01-05'),
+(3, 3, 3, 'Ahorro', 50.00, '2025-01-10'),
+(4, 4, 4, 'Corriente', 100.00, '2025-01-15'),
+(5, 5, 5, 'Ahorro', 1800.00, '2025-01-20'),
+(6, 1, 1, 'Corriente', 0.00, '2025-01-25'),
+(7, 2, 2, 'Ahorro', 4000.00, '2025-01-30'),
+(8, 3, 3, 'Corriente', 100.00, '2025-02-03'),
+(9, 4, 4, 'Ahorro', 0.00, '2025-02-07'),
+(10, 5, 5, 'Corriente', 1600.00, '2025-02-11'),
+(11, 6, 6, 'Ahorro', 2500.00, '2025-02-15'),
+(12, 7, 7, 'Corriente', 1800.00, '2025-02-19'),
+(13, 8, 8, 'Ahorro', 900.00, '2025-02-23'),
+(14, 9, 9, 'Corriente', 200.00, '2025-02-27'),
+(15, 10, 10, 'Ahorro', 4200.00, '2025-03-03'),
+(16, 6, 6, 'Corriente', 0.00, '2025-03-07'),
+(17, 7, 7, 'Ahorro', 500.00, '2025-03-11'),
+(18, 8, 8, 'Corriente', 3700.00, '2025-03-15'),
+(19, 9, 9, 'Ahorro', 1100.00, '2025-03-19'),
+(20, 10, 10, 'Corriente', 600.00, '2025-03-23'),
+(21, 1, 6, 'Plazo Fijo', 7000.00, '2025-03-27'),
+(22, 2, 7, 'Plazo Fijo', 8000.00, '2025-03-31'),
+(23, 3, 8, 'Ahorro', 300.00, '2025-04-05'),
+(24, 4, 9, 'Ahorro', 0.00, '2025-04-10'),
+(25, 5, 10, 'Corriente', 1800.00, '2025-04-15'),
+(26, 6, 6, 'Ahorro', 1000.00, '2025-04-20'),
+(27, 7, 7, 'Corriente', 50.00, '2025-04-25'),
+(28, 8, 8, 'Ahorro', 2500.00, '2025-05-01'),
+(29, 9, 9, 'Corriente', 9000.00, '2025-05-20'),
+(30, 10, 10, 'Ahorro', 150.00, '2025-06-01');
 
 -- TransaccionesCuenta
+DELETE FROM TransaccionesCuenta;
 INSERT INTO TransaccionesCuenta (id_transacciones, id_cuenta, fecha, tipo_transaccion, monto) VALUES
-(1, 1, '2024-06-01 10:00:00', 'Dep髎ito', 500.00),
-(2, 1, '2024-06-03 11:00:00', 'Retiro', 200.00),
-(3, 2, '2024-06-04 09:00:00', 'Dep髎ito', 1000.00),
-(4, 2, '2024-06-05 15:00:00', 'Retiro', 500.00),
-(5, 3, '2024-06-06 10:00:00', 'Retiro', 300.00),      -- saldo negativo
-(6, 4, '2024-06-07 11:00:00', 'Retiro', 100.00),      -- cuenta sin saldo ahora
-(7, 5, '2024-06-08 08:00:00', 'Dep髎ito', 1800.00),
-(8, 6, '2024-06-09 14:00:00', 'Retiro', 1000.00),     -- cuenta sin saldo
-(9, 7, '2024-06-10 16:00:00', 'Dep髎ito', 4000.00),
-(10, 8, '2024-06-11 17:00:00', 'Retiro', 100.00);
+(1, 1, '2025-01-03 10:00:00', 'Dep贸sito', 500.00),
+(2, 1, '2025-01-04 11:00:00', 'Retiro', 200.00),
+(3, 2, '2025-01-06 09:00:00', 'Dep贸sito', 1000.00),
+(4, 2, '2025-01-07 15:00:00', 'Retiro', 500.00),
+(5, 3, '2025-01-11 10:00:00', 'Dep贸sito', 200.00),
+(6, 3, '2025-01-12 11:00:00', 'Retiro', 100.00),
+(7, 4, '2025-01-16 08:00:00', 'Retiro', 100.00),
+(8, 5, '2025-01-21 14:00:00', 'Retiro', 500.00),
+(9, 6, '2025-01-26 16:00:00', 'Dep贸sito', 1000.00),
+(10, 6, '2025-01-27 17:00:00', 'Retiro', 1000.00),
+(11, 7, '2025-02-01 09:10:00', 'Dep贸sito', 1000.00),
+(12, 7, '2025-02-02 17:30:00', 'Retiro', 2000.00),
+(13, 8, '2025-02-04 10:00:00', 'Dep贸sito', 150.00),
+(14, 8, '2025-02-05 12:45:00', 'Retiro', 100.00),
+(15, 9, '2025-02-08 14:00:00', 'Dep贸sito', 300.00),
+(16,10, '2025-02-12 15:20:00', 'Retiro', 600.00),
+(17,11, '2025-02-16 09:00:00', 'Dep贸sito', 2000.00),
+(18,11, '2025-02-17 11:15:00', 'Retiro', 500.00),
+(19,12, '2025-02-20 08:10:00', 'Dep贸sito', 1500.00),
+(20,12, '2025-02-21 18:30:00', 'Retiro', 200.00),
+(21,13, '2025-02-24 13:55:00', 'Retiro', 100.00),
+(22,14, '2025-02-28 16:00:00', 'Dep贸sito', 400.00),
+(23,15, '2025-03-04 10:25:00', 'Retiro', 1000.00),
+(24,16, '2025-03-08 14:40:00', 'Dep贸sito', 1200.00),
+(25,17, '2025-03-12 09:05:00', 'Retiro', 200.00),
+(26,18, '2025-03-16 09:10:00', 'Retiro', 500.00),
+(27,19, '2025-03-20 17:45:00', 'Dep贸sito', 1100.00),
+(28,20, '2025-03-24 11:00:00', 'Retiro', 600.00),
+(29,21, '2025-03-28 12:15:00', 'Dep贸sito', 500.00),
+(30,22, '2025-04-01 18:20:00', 'Dep贸sito', 1000.00);
 
 -- ContratoServicio
-INSERT INTO ContratoServicio (id_contrato, id_cliente, id_servicio, id_agencia, fecha_inicio, plazo_meses, monto_contratado, estado_contrato) VALUES
-(1, 1, 1, 1, '2024-01-10', 12, 5000.00, 'Activo'),
-(2, 2, 2, 2, '2024-02-10', 240, 150000.00, 'Activo'),
-(3, 3, 3, 3, '2024-03-15', 60, 30000.00, 'Activo'),
-(4, 4, 4, 4, '2024-04-20', 24, 4000.00, 'Activo'),
-(5, 5, 5, 5, '2024-05-25', 36, 8000.00, 'Inactivo'),         -- inactivo
-(6, 1, 2, 1, '2024-06-01', 120, 100000.00, 'Activo'),        -- 2 contratos
-(7, 2, 3, 2, '2024-06-02', 48, 25000.00, 'Activo'),
-(8, 3, 1, 3, '2024-06-03', 12, 4000.00, 'Cancelado'),        -- cancelado
-(9, 4, 5, 4, '2024-06-04', 24, 9000.00, 'Activo'),
-(10, 5, 4, 5, '2024-06-05', 36, 6000.00, 'Activo');
+DELETE FROM ContratoServicio;
+INSERT INTO ContratoServicio
+(id_contrato, id_cliente, id_servicio, id_agencia,
+ fecha_inicio, plazo_meses, monto_contratado, estado_contrato)
+VALUES
+(1,  1,  1,  1,  '2025-01-10',  12,   5000.00, 'Activo'),
+(2,  2,  2,  2,  '2025-01-15', 240, 150000.00, 'Activo'),
+(3,  3,  3,  3,  '2025-01-20',  60,  30000.00, 'Activo'),
+(4,  4,  4,  4,  '2025-01-25',  24,   4000.00, 'Activo'),
+(5,  5,  5,  5,  '2025-02-05',  36,   8000.00, 'Inactivo'),   -- inactivo
+(6,  1,  2,  1,  '2025-02-10', 120, 100000.00, 'Activo'),     -- 2.潞 contrato cliente 1
+(7,  2,  3,  2,  '2025-02-15',  48,  25000.00, 'Activo'),
+(8,  3,  1,  3,  '2025-02-20',  12,   4000.00, 'Cancelado'),  -- cancelado
+(9,  4,  5,  4,  '2025-02-25',  24,   9000.00, 'Activo'),
+(10, 5,  4,  5,  '2025-03-05',  36,   6000.00, 'Activo'),
+(11, 6,  6,  6,  '2025-03-10',   6,   5000.00, 'Activo'),
+(12, 7,  7,  7,  '2025-03-15',  12,   2000.00, 'Activo'),
+(13, 8,  8,  8,  '2025-03-20',  24,  20000.00, 'Activo'),
+(14, 9,  9,  9,  '2025-03-25',  12,  10000.00, 'Activo'),
+(15,10, 10, 10, '2025-03-30',  36,  50000.00, 'Activo'),
+(16, 6,  1,  6,  '2025-04-05',  12,   3000.00, 'Activo'),
+(17, 7,  2,  7,  '2025-04-10', 240, 150000.00, 'Activo'),
+(18, 8,  3,  8,  '2025-04-15',  60,  30000.00, 'Activo'),
+(19, 9,  4,  9,  '2025-04-20',  24,   4000.00, 'Cancelado'),
+(20,10,  5, 10, '2025-04-25',  36,   8000.00, 'Inactivo'),
+(21, 1,  6,  6,  '2025-04-30',   6,   2000.00, 'Activo'),
+(22, 2,  7,  7,  '2025-05-05',  12,   3000.00, 'Activo'),
+(23, 3,  8,  8,  '2025-05-10',  24,  15000.00, 'Activo'),
+(24, 4,  9,  9,  '2025-05-15',  12,   7000.00, 'Activo'),
+(25, 5, 10, 10, '2025-05-20',  60,  30000.00, 'Activo'),
+(26, 6,  2,  6,  '2025-05-25', 240, 100000.00, 'Activo'),
+(27, 7,  3,  7,  '2025-05-30',  48,  25000.00, 'Activo'),
+(28, 8,  4,  8,  '2025-06-01',  24,   9000.00, 'Atrasado'),
+(29, 9,  5,  9,  '2025-06-02',  36,   6000.00, 'Activo'),
+(30,10, 1, 10,  '2025-06-03',  12,   4000.00, 'Activo');
 
 -- PagoServicio
+DELETE FROM PagoServicio;
 SELECT * FROM PagoServicio;
-
-ALTER TABLE PagoServicio
-ALTER COLUMN fecha_pago DATE NULL;
-
-ALTER TABLE PagoServicio
-ALTER COLUMN monto_pagado DECIMAL(10,2) NULL;
-
 INSERT INTO PagoServicio (id_pago, id_contrato, fecha_pago, monto_pagado, nro_cuota, estado_pago) VALUES
-(1, 1, '2024-02-10', 500.00, 1, 'Pagado'),
-(2, 2, '2024-03-11', 625.00, 1, 'Pagado'),
-(3, 2, '2024-04-11', 625.00, 2, 'Pagado'),
-(4, 3, '2024-04-12', 500.00, 1, 'Atrasado'),             -- pago incompleto
+(1, 1, '2025-01-10', 500.00, 1, 'Pagado'),
+(2, 2, '2025-01-11', 625.00, 1, 'Pagado'),
+(3, 2, '2025-02-11', 625.00, 2, 'Pagado'),
+(4, 3, '2025-02-12', 300.00, 1, 'Atrasado'),             -- pago incompleto
 (5, 3, NULL, NULL, 2, 'Pendiente'),                      -- sin pago
 (6, 4, NULL, NULL, 1, 'Pendiente'),                      -- sin pagar
-(7, 5, '2024-06-14', 222.22, 1, 'Pagado'),               -- contrato inactivo
-(8, 6, '2024-07-01', 1000.00, 1, 'Pagado'),
+(7, 5, '2025-02-14', 222.22, 1, 'Pagado'),               -- contrato inactivo
+(8, 6, '2025-03-01', 1000.00, 1, 'Pagado'),
 (9, 7, NULL, NULL, 1, 'Pendiente'),                      -- cliente con deuda
-(10, 9, '2024-07-04', 375.00, 1, 'Pagado');
+(10, 9, '2025-03-04', 375.00, 1, 'Pagado'),
+(11, 1,  '2025-04-02', 833.33, 2, 'Pagado'),
+(12, 2,  '2025-04-03', 166.67, 3, 'Pagado'),
+(13, 3,  NULL,        NULL,   1, 'Pendiente'),
+(14, 4,  '2025-04-05', 833.33, 2, 'Pagado'),
+(15, 5,  NULL,        NULL,   2, 'Pendiente'),
+(16, 6,  '2025-04-07', 250.00, 2, 'Atrasado'),
+(17, 7,  '2025-04-08', 625.00, 1, 'Pagado'),
+(18, 8,  NULL,        NULL,   2, 'Pendiente'),
+(19, 9,  NULL,        NULL,   2, 'Pendiente'),
+(20, 10, '2025-04-11', 222.22, 1, 'Pagado'),
+(21, 11, '2025-04-12', 333.33, 1, 'Pagado'),
+(22, 12, NULL,        NULL,   1, 'Pendiente'),
+(23, 13, '2025-04-14', 625.00, 1, 'Pagado'),
+(24, 14, NULL,        NULL,   1, 'Pendiente'),
+(25, 15, '2025-04-16', 500.00, 1, 'Pagado'),
+(26, 16, '2025-04-17', 833.33, 1, 'Pagado'),
+(27, 17, NULL,        NULL,   1, 'Pendiente'),
+(28, 18, NULL,        NULL,   1, 'Atrasado'),
+(29, 19, '2025-04-20', 166.67, 1, 'Pagado'),
+(30, 20, '2025-04-21', 333.33, 1, 'Pagado');
 
