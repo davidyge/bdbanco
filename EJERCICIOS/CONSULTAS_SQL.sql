@@ -6,7 +6,7 @@ Cliente c JOIN Cuenta cu ON c.id_cliente = cu.id_cliente
 GROUP BY 
 c.id_cliente, c.nombre, c.Apellido ORDER BY SaldoTotal DESC;
 
--- 1.2 	¿Qué contratos tienen cuotas vencidas y cuántos días de atraso suman?
+-- 1.2 	Â¿QuÃ© contratos tienen cuotas vencidas y cuÃ¡ntos dÃ­as de atraso suman?
 SELECT ps.id_contrato, c.nombre + ' ' + c.Apellido AS Cliente, COUNT(*) AS CuotasVencidas, 
 SUM(DATEDIFF(DAY, ps.fecha_pago, GETDATE())) AS DiasAtraso 
 FROM
@@ -20,7 +20,7 @@ FROM
 Agencia a JOIN ContratoServicio cs ON a.id_agencia = cs.id_agencia 
 WHERE cs.estado_contrato = 'Activo' GROUP BY a.id_agencia, a.nombre_agencia ORDER BY TotalActivo DESC;
 
---1.4 Clientes sin movimientos en sus cuentas en los últimos 60 días
+--1.4 Clientes sin movimientos en sus cuentas en los Ãºltimos 60 dÃ­as
 SELECT DISTINCT c.id_cliente, c.nombre, c.Apellido 
 FROM 
 Cliente c JOIN Cuenta cu ON c.id_cliente = cu.id_cliente 
@@ -51,37 +51,29 @@ RETURNS MONEY
 AS
 BEGIN
     DECLARE @pendiente MONEY;
-    SELECT @pendiente = cs.monto_contratado - ISNULL(SUM(ps.monto_pagado),0)
+    SELECT @pendiente  = cs.monto_contratado - ISNULL(SUM(ps.monto_pagado),0)
     FROM ContratoServicio cs
     LEFT JOIN PagoServicio ps ON cs.id_contrato = ps.id_contrato
     WHERE cs.id_contrato = @IdContrato
     GROUP BY cs.monto_contratado;
     RETURN ISNULL(@pendiente,0);
 END;
-SELECT dbo.fn_MontoPendienteContrato(2)
+SELECT dbo.fn_MontoPendienteContrato(1)
 
--- 2.3  Mostrar los días de atraso de un pago a traves del id pago
+-- 2.3  Mostrar los dÃ­as de atraso de un pago a traves del id pago
+-- AGREGAR ISNULL
 CREATE OR ALTER FUNCTION fn_DiasAtrasoPago (@IdPago INT)
 RETURNS INT
 AS
 BEGIN
     DECLARE @dias INT;
-    SELECT @dias = CASE 
-                     WHEN estado_pago = 'Pagado' OR fecha_pago IS NULL THEN 0
-                     ELSE DATEDIFF(DAY, fecha_pago, GETDATE())
-                   END
+    SELECT @dias = DATEDIFF(DAY, fecha_pago, GETDATE())
     FROM PagoServicio WHERE id_pago = @IdPago;
-    RETURN ISNULL(@dias,0);
+    RETURN @dias
 END;
+SELECT dbo.fn_DiasAtrasoPago(1)
 
-
-SELECT fecha_pago, dbo.fn_DiasAtrasoPago(6)
-FROM PagoServicio;
-
-SELECT * FROM PagoServicio where id_contrato=6;
-SELECT * FROM ContratoServicio where id_servicio=;
-
--- 2.4  Número total de transacciones de una cuenta 
+-- 2.4  NÃºmero total de transacciones de una cuenta 
 CREATE OR ALTER FUNCTION fn_TotalTransxCuenta (@IdCuenta INT)
 RETURNS INT
 AS
@@ -90,7 +82,7 @@ BEGIN
 END;
 GO
 
--- 2.5  Estado lógico del contrato (Activo|Saldado)
+-- 2.5  Estado lÃ³gico del contrato (Activo|Saldado)
 CREATE OR ALTER FUNCTION fn_EstadoLogicoContrato (@IdContrato INT)
 RETURNS VARCHAR(20)
 AS
@@ -133,7 +125,7 @@ BEGIN
 END;
 GO
 
--- 3.3  Depositar en cuenta y generar transacción 
+-- 3.3  Depositar en cuenta y generar transacciÃ³n 
 CREATE OR ALTER PROC sp_DepositoCuenta
     @IdCuenta INT,
     @Monto    MONEY
@@ -144,7 +136,7 @@ BEGIN
     UPDATE Cuenta SET saldo += @Monto WHERE id_cuenta = @IdCuenta;
 
     INSERT INTO TransaccionesCuenta (id_cuenta, fecha, tipo_transaccion, monto)
-    VALUES (@IdCuenta, SYSDATETIME(), 'Depósito', @Monto);
+    VALUES (@IdCuenta, SYSDATETIME(), 'DepÃ³sito', @Monto);
 END;
 GO
 
