@@ -58,7 +58,7 @@ BEGIN
     GROUP BY cs.monto_contratado;
     RETURN ISNULL(@pendiente,0);
 END;
-SELECT dbo.fn_MontoPendienteContrato(1)
+SELECT estado_contrato, dbo.fn_MontoPendienteContrato(id_contrato) AS 'moto_prestado' FROM ContratoServicio
 
 -- 2.3  Mostrar los días de atraso de un pago a traves del id pago
 -- AGREGAR ISNULL
@@ -69,9 +69,15 @@ BEGIN
     DECLARE @dias INT;
     SELECT @dias = DATEDIFF(DAY, fecha_pago, GETDATE())
     FROM PagoServicio WHERE id_pago = @IdPago;
-    RETURN @dias
+    RETURN ISNULL(@dias,-1)
 END;
-SELECT dbo.fn_DiasAtrasoPago(1)
+SELECT id_pago, estado_pago,
+  CASE 
+    WHEN dbo.fn_DiasAtrasoPago(id_pago) = -1 AND  THEN 'Sin pago'
+    ELSE CAST(dbo.fn_DiasAtrasoPago(id_pago) AS VARCHAR)
+  END AS Dias_atraso
+FROM PagoServicio;
+SELECT estado_pago, dbo.fn_DiasAtrasoPago(1) AS 'Dias_atraso' FROM PagoServicio;
 
 -- 2.4  Número total de transacciones de una cuenta 
 CREATE OR ALTER FUNCTION fn_TotalTransxCuenta (@IdCuenta INT)
@@ -239,3 +245,90 @@ RETURN (
     JOIN Cliente c ON cs.id_cliente = c.id_cliente
     WHERE ps.estado_pago IN ('Pendiente','Atrasado')
 );
+
+
+-- //////////////////////////// DISPARADORES /////////////////////////////////////////
+/* Cree un trigger llamado trg_GenerarCuotas que, al insertar un nuevo préstamo en la tabla Prestamos, genere automáticamente
+los pagos mensuales (cuotas) del cliente, distribuyendo el monto total (con interés) en partes iguales durante el plazo del préstamo.
+*/
+
+ALTER TRIGGER trg_GenerarCuotas
+ON ContratoServicio
+AFTER INSERT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    DECLARE @i INT,
+            @id_contrato INT,
+            @plazo INT,
+            @monto DECIMAL(10,2),
+            @cuota DECIMAL(10,2),
+            @fecha_inicio DATE,
+            @id_servicio INT,
+            @tasa_interes DECIMAL(5,2),
+            @monto_total DECIMAL(10,2);
+
+    -- Cursor para recorrer los contratos insertados
+    DECLARE contrato_cursor CURSOR FOR
+        SELECT id_contrato, plazo_meses, monto_contratado, fecha_inicio, id_servicio
+        FROM inserted;
+
+    OPEN contrato_cursor;
+
+    FETCH NEXT FROM contrato_cursor INTO @id_contrato, @plazo, @monto, @fecha_inicio, @id_servicio;
+
+    WHILE @@FETCH_STATUS = 0
+    BEGIN
+        -- Obtener tasa de interés desde ServiciosFinancieros
+        SELECT @tasa_interes = tasa_interes
+        FROM ServiciosFinancieros
+        WHERE id_servicio = @id_servicio;
+
+        -- Calcular monto total con interés simple proporcional al plazo
+        SET @monto_total = @monto * (1 + (@tasa_interes / 100.0));
+
+        -- Calcular monto de cada cuota
+        SET @cuota = ROUND(@monto_total / @plazo, 2);
+        SET @i = 1;
+
+        WHILE @i <= @plazo
+        BEGIN
+            INSERT INTO ContratoServicioDet (
+                id_contrato, nro_cuota, fecha_programada, monto_cuota, estado_cuota, fecha_pagada
+            )
+            VALUES (
+                @id_contrato,
+                @i,
+                DATEADD(MONTH, @i, @fecha_inicio),
+                @cuota,
+                'Pendiente',
+                NULL
+            );
+
+            SET @i = @i + 1;
+        END;
+
+        FETCH NEXT FROM contrato_cursor INTO @id_contrato, @plazo, @monto, @fecha_inicio, @id_servicio;
+    END;
+
+    CLOSE contrato_cursor;
+    DEALLOCATE contrato_cursor;
+END;
+
+/*
+Crear un trigger para actualizar automáticamente el estado de una cuota como "Pagado" y registrar la fecha del pago.
+*/
+CREATE TRIGGER trg_ActualizarCuotaPagada
+ON PagoServicio
+AFTER INSERT
+AS
+BEGIN
+    -- Actualiza la cuota correspondiente como Pagado
+    UPDATE csd
+    SET 
+        csd.estado_cuota = 'Pagado',
+        csd.fecha_pagada = i.fecha_pago
+    FROM ContratoServicioDet csd
+    INNER JOIN inserted i ON csd.id_contratoDet = i.id_contratoDet;
+END;

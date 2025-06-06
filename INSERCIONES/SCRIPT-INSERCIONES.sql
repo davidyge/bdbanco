@@ -1,8 +1,17 @@
+DELETE FROM Cliente;
+DELETE FROM Region;
+DELETE FROM Agencia;
+DELETE FROM Cuenta; --
+DELETE FROM TransaccionesCuenta;
+DELETE FROM ContratoServicio;
+DELETE FROM PagoServicio;
+DELETE FROM ServiciosFinancieros;
+
 -- TABLAS INDEPENDIENTES
 SELECT * FROM Cliente;
 SELECT * FROM Region;
 SELECT * FROM Agencia;
-SELECT * FROM Region;
+SELECT * FROM ServiciosFinancieros;
 
 -- TABLAS TRANSACCIONALES
 SELECT * FROM Cuenta;
@@ -37,6 +46,19 @@ INSERT INTO Agencia (id_agencia, id_region, nombre_agencia, direccion) VALUES
 (9, 9, 'Agencia Puno',      'Jr. Moquegua 77, Puno'),
 (10,10,'Agencia Tarapoto',  'Av. Alfonso Ugarte 300, Tarapoto');
 
+-- ServiciosFinancieros
+INSERT INTO ServiciosFinancieros (id_servicio, nombre_servicio, tipo_servicio, monto_maximo, tasa_interes) VALUES
+(1, 'Préstamo Personal', 'Crédito', 10000.00, 12.5),
+(2, 'Crédito Hipotecario', 'Hipoteca', 200000.00, 8.75),
+(3, 'Crédito Vehicular', 'Vehículo', 50000.00, 10.0),
+(4, 'Tarjeta Clásica', 'Tarjeta', 5000.00, 20.0),
+(5, 'Tarjeta Oro', 'Tarjeta', 10000.00, 18.0),
+(6, 'Cuenta de Ahorro Premier', 'Depósito', 0.00, 0.75),
+(7, 'Seguro de Vida',           'Seguro',   200000.00, 0.00),
+(8, 'Seguro Vehicular',         'Seguro',    80000.00, 0.00),
+(9, 'Plazo Fijo 360',         'Inversión', 50000.00, 6.50),
+(10,'Crédito PyME',             'Crédito',  150000.00, 13.0);
+
 -- Cliente
 DELETE FROM Cliente;
 INSERT INTO Cliente (id_cliente, nombre, Apellido, dni, fecha_nacimiento, email, telefono) VALUES
@@ -51,23 +73,9 @@ INSERT INTO Cliente (id_cliente, nombre, Apellido, dni, fecha_nacimiento, email,
 (9, 'Felipe', 'Nuñez',    '88990011', '1984-09-27', 'felipe@gmail.com', '911888999'),
 (10,'Elena',  'Castro',   '99001122', '1996-04-05', 'elena@gmail.com',  '900111222');
 
--- ServiciosFinancieros
-INSERT INTO ServiciosFinancieros (id_servicio, nombre_servicio, tipo_servicio, monto_maximo, tasa_interes) VALUES
-(1, 'Préstamo Personal', 'Crédito', 10000.00, 12.5),
-(2, 'Crédito Hipotecario', 'Hipoteca', 200000.00, 8.75),
-(3, 'Crédito Vehicular', 'Vehículo', 50000.00, 10.0),
-(4, 'Tarjeta Clásica', 'Tarjeta', 5000.00, 20.0),
-(5, 'Tarjeta Oro', 'Tarjeta', 10000.00, 18.0),
-(6, 'Cuenta de Ahorro Premier', 'Depósito', 0.00, 0.75),
-(7, 'Seguro de Vida',           'Seguro',   200000.00, 0.00),
-(8, 'Seguro Vehicular',         'Seguro',    80000.00, 0.00),
-(9, 'Plazo Fijo 360 d',         'Inversión', 50000.00, 6.50),
-(10,'Crédito PyME',             'Crédito',  150000.00, 13.0);
-
-
 -- INSERCIÓN DE TABLAS TRANSACCIONALES
 -- Cuenta 
-DELETE FROM Cuenta;
+SELECT * FROM Cuenta;
 INSERT INTO Cuenta (id_cuenta, id_cliente, id_agencia, tipo_cuenta, saldo, fecha_creacion) VALUES
 (1, 1, 1, 'Ahorro', 1500.00, '2025-01-02'),
 (2, 2, 2, 'Corriente', 3000.00, '2025-01-05'),
@@ -101,7 +109,7 @@ INSERT INTO Cuenta (id_cuenta, id_cliente, id_agencia, tipo_cuenta, saldo, fecha
 (30, 10, 10, 'Ahorro', 150.00, '2025-06-01');
 
 -- TransaccionesCuenta
-DELETE FROM TransaccionesCuenta;
+SELECT * FROM TransaccionesCuenta;
 INSERT INTO TransaccionesCuenta (id_transacciones, id_cuenta, fecha, tipo_transaccion, monto) VALUES
 (1, 1, '2025-01-03 10:00:00', 'Depósito', 500.00),
 (2, 1, '2025-01-04 11:00:00', 'Retiro', 200.00),
@@ -135,74 +143,18 @@ INSERT INTO TransaccionesCuenta (id_transacciones, id_cuenta, fecha, tipo_transa
 (30,22, '2025-04-01 18:20:00', 'Depósito', 1000.00);
 
 -- ContratoServicio
-DELETE FROM ContratoServicio;
-INSERT INTO ContratoServicio
-(id_contrato, id_cliente, id_servicio, id_agencia,
- fecha_inicio, plazo_meses, monto_contratado, estado_contrato)
+DELETE ContratoServicio;
+SELECT * FROM ContratoServicio;
+INSERT INTO ContratoServicio (id_contrato, id_cliente, id_servicio, id_agencia,
+fecha_inicio, plazo_meses, monto_contratado, estado_contrato)
 VALUES
-(1,  1,  1,  1,  '2025-01-10',  12,   5000.00, 'Activo'),
-(2,  2,  2,  2,  '2025-01-15', 240, 150000.00, 'Activo'),
-(3,  3,  3,  3,  '2025-01-20',  60,  30000.00, 'Activo'),
-(4,  4,  4,  4,  '2025-01-25',  24,   4000.00, 'Activo'),
-(5,  5,  5,  5,  '2025-02-05',  36,   8000.00, 'Inactivo'),   -- inactivo
-(6,  1,  2,  1,  '2025-02-10', 120, 100000.00, 'Activo'),     -- 2.º contrato cliente 1
-(7,  2,  3,  2,  '2025-02-15',  48,  25000.00, 'Activo'),
-(8,  3,  1,  3,  '2025-02-20',  12,   4000.00, 'Cancelado'),  -- cancelado
-(9,  4,  5,  4,  '2025-02-25',  24,   9000.00, 'Activo'),
-(10, 5,  4,  5,  '2025-03-05',  36,   6000.00, 'Activo'),
-(11, 6,  6,  6,  '2025-03-10',   6,   5000.00, 'Activo'),
-(12, 7,  7,  7,  '2025-03-15',  12,   2000.00, 'Activo'),
-(13, 8,  8,  8,  '2025-03-20',  24,  20000.00, 'Activo'),
-(14, 9,  9,  9,  '2025-03-25',  12,  10000.00, 'Activo'),
-(15,10, 10, 10, '2025-03-30',  36,  50000.00, 'Activo'),
-(16, 6,  1,  6,  '2025-04-05',  12,   3000.00, 'Activo'),
-(17, 7,  2,  7,  '2025-04-10', 240, 150000.00, 'Activo'),
-(18, 8,  3,  8,  '2025-04-15',  60,  30000.00, 'Activo'),
-(19, 9,  4,  9,  '2025-04-20',  24,   4000.00, 'Cancelado'),
-(20,10,  5, 10, '2025-04-25',  36,   8000.00, 'Inactivo'),
-(21, 1,  6,  6,  '2025-04-30',   6,   2000.00, 'Activo'),
-(22, 2,  7,  7,  '2025-05-05',  12,   3000.00, 'Activo'),
-(23, 3,  8,  8,  '2025-05-10',  24,  15000.00, 'Activo'),
-(24, 4,  9,  9,  '2025-05-15',  12,   7000.00, 'Activo'),
-(25, 5, 10, 10, '2025-05-20',  60,  30000.00, 'Activo'),
-(26, 6,  2,  6,  '2025-05-25', 240, 100000.00, 'Activo'),
-(27, 7,  3,  7,  '2025-05-30',  48,  25000.00, 'Activo'),
-(28, 8,  4,  8,  '2025-06-01',  24,   9000.00, 'Atrasado'),
-(29, 9,  5,  9,  '2025-06-02',  36,   6000.00, 'Activo'),
-(30,10, 1, 10,  '2025-06-03',  12,   4000.00, 'Activo');
+(1,  1,  1,  1,  '2025-01-10',  6,   5000.00, 'Activo');
 
 -- PagoServicio
-DELETE FROM PagoServicio;
 SELECT * FROM PagoServicio;
-INSERT INTO PagoServicio (id_pago, id_contrato, fecha_pago, monto_pagado, nro_cuota, estado_pago) VALUES
-(1, 1, '2025-01-10', 500.00, 1, 'Pagado'),
-(2, 2, '2025-01-11', 625.00, 1, 'Pagado'),
-(3, 2, '2025-02-11', 625.00, 2, 'Pagado'),
-(4, 3, '2025-02-12', 300.00, 1, 'Atrasado'),             -- pago incompleto
-(5, 3, NULL, NULL, 2, 'Pendiente'),                      -- sin pago
-(6, 4, NULL, NULL, 1, 'Pendiente'),                      -- sin pagar
-(7, 5, '2025-02-14', 222.22, 1, 'Pagado'),               -- contrato inactivo
-(8, 6, '2025-03-01', 1000.00, 1, 'Pagado'),
-(9, 7, NULL, NULL, 1, 'Pendiente'),                      -- cliente con deuda
-(10, 9, '2025-03-04', 375.00, 1, 'Pagado'),
-(11, 1,  '2025-04-02', 833.33, 2, 'Pagado'),
-(12, 2,  '2025-04-03', 166.67, 3, 'Pagado'),
-(13, 3,  NULL,        NULL,   1, 'Pendiente'),
-(14, 4,  '2025-04-05', 833.33, 2, 'Pagado'),
-(15, 5,  NULL,        NULL,   2, 'Pendiente'),
-(16, 6,  '2025-04-07', 250.00, 2, 'Atrasado'),
-(17, 7,  '2025-04-08', 625.00, 1, 'Pagado'),
-(18, 8,  NULL,        NULL,   2, 'Pendiente'),
-(19, 9,  NULL,        NULL,   2, 'Pendiente'),
-(20, 10, '2025-04-11', 222.22, 1, 'Pagado'),
-(21, 11, '2025-04-12', 333.33, 1, 'Pagado'),
-(22, 12, NULL,        NULL,   1, 'Pendiente'),
-(23, 13, '2025-04-14', 625.00, 1, 'Pagado'),
-(24, 14, NULL,        NULL,   1, 'Pendiente'),
-(25, 15, '2025-04-16', 500.00, 1, 'Pagado'),
-(26, 16, '2025-04-17', 833.33, 1, 'Pagado'),
-(27, 17, NULL,        NULL,   1, 'Pendiente'),
-(28, 18, NULL,        NULL,   1, 'Atrasado'),
-(29, 19, '2025-04-20', 166.67, 1, 'Pagado'),
-(30, 20, '2025-04-21', 333.33, 1, 'Pagado');
+INSERT INTO PagoServicio (id_pago, id_contrato, id_contratoDet, fecha_pago, monto_pagado) VALUES
+(1, 1, 13, '2025-02-10', 937.50);
 
+DELETE ContratoServicioDet;
+SELECT * FROM ContratoServicioDet;
+--INSERT INTO ContratoServicioDet (id_contrato, nro_cuota, fecha_programada, monto_cuota, estado_cuota, fecha_pagada) VALUES

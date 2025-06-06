@@ -1,6 +1,6 @@
 
 CREATE TABLE Cliente (
-    id_cliente INT PRIMARY KEY,
+    id_cliente INT IDENTITY(1,1) PRIMARY KEY,
     nombre VARCHAR(100) NOT NULL,
     apellido VARCHAR(100) NOT NULL,
     dni CHAR(8) UNIQUE NOT NULL,
@@ -10,7 +10,7 @@ CREATE TABLE Cliente (
 );
 
 CREATE TABLE ServiciosFinancieros (
-    id_servicio INT PRIMARY KEY,
+    id_servicio INT IDENTITY(1,1) PRIMARY KEY,
     nombre_servicio VARCHAR(100) NOT NULL,
     tipo_servicio VARCHAR(50) NOT NULL,
     monto_maximo DECIMAL(12,2),
@@ -18,12 +18,12 @@ CREATE TABLE ServiciosFinancieros (
 );
 
 CREATE TABLE Region (
-    id_region INT PRIMARY KEY,
+    id_region INT IDENTITY(1,1) PRIMARY KEY,
     nombre_region VARCHAR(100) NOT NULL
 );
 
 CREATE TABLE Agencia (
-    id_agencia INT PRIMARY KEY,
+    id_agencia INT IDENTITY(1,1) PRIMARY KEY,
     nombre_agencia VARCHAR(100) NOT NULL,
     direccion VARCHAR(200),
     id_region INT NOT NULL,
@@ -31,7 +31,7 @@ CREATE TABLE Agencia (
 );
 
 CREATE TABLE Cuenta (
-    id_cuenta INT PRIMARY KEY,
+    id_cuenta INT IDENTITY(1,1) PRIMARY KEY,
     id_cliente INT NOT NULL,
     id_agencia INT NOT NULL,
     tipo_cuenta VARCHAR(50) NOT NULL,
@@ -42,7 +42,7 @@ CREATE TABLE Cuenta (
 );
 
 CREATE TABLE TransaccionesCuenta (
-    id_transacciones INT PRIMARY KEY,
+    id_transacciones INT IDENTITY(1,1) PRIMARY KEY,
     id_cuenta INT NOT NULL,
     fecha DATETIME NOT NULL,
     tipo_transaccion VARCHAR(50) NOT NULL,
@@ -51,7 +51,7 @@ CREATE TABLE TransaccionesCuenta (
 );
 
 CREATE TABLE ContratoServicio (
-    id_contrato INT PRIMARY KEY,
+    id_contrato INT IDENTITY(1,1) PRIMARY KEY,
     id_cliente INT NOT NULL,
     id_servicio INT NOT NULL,
     id_agencia INT NOT NULL,
@@ -64,12 +64,24 @@ CREATE TABLE ContratoServicio (
     FOREIGN KEY (id_agencia) REFERENCES Agencia(id_agencia)
 );
 
+CREATE TABLE ContratoServicioDet (
+    id_contratoDet     INT IDENTITY(1,1) PRIMARY KEY,
+    id_contrato        INT NOT NULL,
+    nro_cuota          INT NOT NULL,
+    fecha_programada   DATE NOT NULL,
+    monto_cuota        DECIMAL(10,2) NOT NULL,
+    estado_cuota       VARCHAR(20) DEFAULT 'Pendiente', -- Pendiente, Pagado, Atrasado, Parcial
+    fecha_pagada       DATE DEFAULT NULL,
+
+    FOREIGN KEY (id_contrato) REFERENCES ContratoServicio(id_contrato)
+);
+
 CREATE TABLE PagoServicio (
-    id_pago INT PRIMARY KEY,
+    id_pago INT IDENTITY(1,1)  PRIMARY KEY,
     id_contrato INT NOT NULL,
+    id_contratoDet INT NOT NULL,
     fecha_pago DATE NOT NULL,
     monto_pagado DECIMAL(12,2) NOT NULL,
-    nro_cuota INT NOT NULL,
-    estado_pago VARCHAR(50) NOT NULL,
-    FOREIGN KEY (id_contrato) REFERENCES ContratoServicio(id_contrato)
+    FOREIGN KEY (id_contrato) REFERENCES ContratoServicio(id_contrato),
+    FOREIGN KEY (id_contratoDet) REFERENCES ContratoServicioDet(id_contratoDet)
 );
