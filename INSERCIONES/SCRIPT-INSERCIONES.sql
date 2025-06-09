@@ -149,11 +149,16 @@ INSERT INTO ContratoServicio (id_contrato, id_cliente, id_servicio, id_agencia,
 fecha_inicio, plazo_meses, monto_contratado, estado_contrato)
 VALUES
 (1,  1,  1,  1,  '2025-01-10',  6,   5000.00, 'Activo');
-
+(1,  3,  2,  1,  '2025-02-15',  3,   7000.00, 'Activo');
+(1,  5,  4,  3,  '2025-01-12',  4,   4000.00, 'Activo');
+(1,  4,  2,  2,  '2025-01-01',  5,   8000.00, 'Activo');
+(1,  2,  3,  4,  '2025-03-10',  5,   9000.00, 'Activo');
+(1,  6,  3,  4,  '2025-01-20',  4,   3000.00, 'Activo');
 -- PagoServicio
 SELECT * FROM PagoServicio;
 INSERT INTO PagoServicio (id_pago, id_contrato, id_contratoDet, fecha_pago, monto_pagado) VALUES
-(1, 1, 13, '2025-02-10', 937.50);
+(1, 1, 13, '2025-02-10', 937.50),
+(2, 1, 14, '2025-03-10', 937.50);
 
 DELETE ContratoServicioDet;
 SELECT * FROM ContratoServicioDet;

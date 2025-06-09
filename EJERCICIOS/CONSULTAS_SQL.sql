@@ -1,40 +1,53 @@
 -- 1. CONSULTAS
--- 1.1 Mostrar el saldo total maneja cada cliente, detallar nombres y ordenadar saldo de manera descendente.
+-- 1 Mostrar el saldo total que maneja cada cliente, detallar nombres y ordenadar saldo de manera descendente.
 SELECT c.id_cliente, c.nombre + ' ' + c.Apellido AS Cliente, SUM(cu.saldo) AS SaldoTotal 
 FROM 
 Cliente c JOIN Cuenta cu ON c.id_cliente = cu.id_cliente 
 GROUP BY 
 c.id_cliente, c.nombre, c.Apellido ORDER BY SaldoTotal DESC;
 
--- 1.2 	¿Qué contratos tienen cuotas vencidas y cuántos días de atraso suman?
-SELECT ps.id_contrato, c.nombre + ' ' + c.Apellido AS Cliente, COUNT(*) AS CuotasVencidas, 
-SUM(DATEDIFF(DAY, ps.fecha_pago, GETDATE())) AS DiasAtraso 
+-- 2 ¿Qué contratos tienen cuotas vencidas y cuántos días de atraso suman los clientes?
+SELECT csd.id_contrato, c.nombre + ' ' + c.apellido AS Cliente, 
+    COUNT(*) AS CuotasVencidas, SUM(DATEDIFF(DAY, csd.fecha_programada, GETDATE())) AS DiasAtraso 
 FROM
-PagoServicio ps JOIN ContratoServicio cs ON ps.id_contrato = cs.id_contrato 
-JOIN Cliente c ON cs.id_cliente = c.id_cliente 
-WHERE ps.estado_pago IN ('Pendiente','Atrasado') GROUP BY ps.id_contrato, c.nombre, c.Apellido;
+    ContratoServicioDet csd JOIN 
+    ContratoServicio cs ON csd.id_contrato = cs.id_contrato JOIN Cliente c ON cs.id_cliente = c.id_cliente 
+WHERE csd.estado_cuota IN ('Pendiente','Atrasado') AND csd.fecha_programada < GETDATE()
+GROUP BY csd.id_contrato, c.nombre, c.apellido;
 
--- 1.3 	Mostrar las 3 agencias con mayor monto contratado activo
+
+SELECT * FROM ContratoServicioDet;
+
+SELECT * FROM PagoServicio;
+SELECT * FROM Cliente;
+
+SELECT * FROM Agencia;
+SELECT * FROM ContratoServicio;
+
+
+--3 Mostrar las 3 agencias con mayor monto contratado activo de forma descendente
 SELECT TOP (3) a.id_agencia, a.nombre_agencia, SUM(cs.monto_contratado) AS TotalActivo 
 FROM 
 Agencia a JOIN ContratoServicio cs ON a.id_agencia = cs.id_agencia 
 WHERE cs.estado_contrato = 'Activo' GROUP BY a.id_agencia, a.nombre_agencia ORDER BY TotalActivo DESC;
 
---1.4 Clientes sin movimientos en sus cuentas en los últimos 60 días
+
+
+--4 Clientes sin movimientos en sus cuentas en los últimos 60 días
 SELECT DISTINCT c.id_cliente, c.nombre, c.Apellido 
 FROM 
 Cliente c JOIN Cuenta cu ON c.id_cliente = cu.id_cliente 
 LEFT JOIN TransaccionesCuenta t ON cu.id_cuenta = t.id_cuenta AND t.fecha >= DATEADD(DAY,-60,GETDATE()) 
 WHERE t.id_transacciones IS NULL;
 
---1.5 Rentabilidad por tipo de servicio (contratado vs. cobrado)
+--5 Rentabilidad por tipo de servicio (contratado vs. cobrado)
 SELECT sf.nombre_servicio, SUM(cs.monto_contratado) AS Contratado, SUM(ISNULL(ps.monto_pagado,0)) AS Cobrado 
 FROM 
 ServiciosFinancieros sf JOIN ContratoServicio cs ON sf.id_servicio = cs.id_servicio 
 LEFT JOIN PagoServicio ps ON cs.id_contrato = ps.id_contrato GROUP BY sf.nombre_servicio ORDER BY Contratado DESC;
 
--- 2. FUNCIONES
--- 2.1 Crea una funcion para mostrar el saldo total de un cliente recibiendo el parametro idcliente 
+-- FUNCIONES
+--6 Crea una funcion para mostrar el saldo total de un cliente recibiendo el parametro idcliente 
 CREATE OR ALTER FUNCTION fn_SaldoCliente (@IdCliente INT)
 RETURNS 
 MONEY
@@ -45,7 +58,7 @@ END;
 
 SELECT dbo.fn_SaldoCliente(1);
 
---  2.2  Mostrar el monto pendiente de un contrato a traves del id contrato
+--7  Mostrar el monto pendiente de un contrato a traves del id contrato
 CREATE OR ALTER FUNCTION fn_MontoPendienteContrato (@IdContrato INT)
 RETURNS MONEY
 AS
@@ -60,7 +73,7 @@ BEGIN
 END;
 SELECT estado_contrato, dbo.fn_MontoPendienteContrato(id_contrato) AS 'moto_prestado' FROM ContratoServicio
 
--- 2.3  Mostrar los días de atraso de un pago a traves del id pago
+--8  Mostrar los días de atraso de un pago a traves del id pago
 -- AGREGAR ISNULL
 CREATE OR ALTER FUNCTION fn_DiasAtrasoPago (@IdPago INT)
 RETURNS INT
@@ -79,7 +92,7 @@ SELECT id_pago, estado_pago,
 FROM PagoServicio;
 SELECT estado_pago, dbo.fn_DiasAtrasoPago(1) AS 'Dias_atraso' FROM PagoServicio;
 
--- 2.4  Número total de transacciones de una cuenta 
+--9  Número total de transacciones de una cuenta 
 CREATE OR ALTER FUNCTION fn_TotalTransxCuenta (@IdCuenta INT)
 RETURNS INT
 AS
@@ -88,7 +101,7 @@ BEGIN
 END;
 GO
 
--- 2.5  Estado lógico del contrato (Activo|Saldado)
+--10  Estado lógico del contrato (Activo|Saldado)
 CREATE OR ALTER FUNCTION fn_EstadoLogicoContrato (@IdContrato INT)
 RETURNS VARCHAR(20)
 AS
@@ -100,7 +113,7 @@ END;
 GO
 
 -- PROCEDIMIENTOS ALMACENADOS
--- 3.1  Registrar un pago y actualizar estado
+--11  Registrar un pago y actualizar estado
 CREATE OR ALTER PROC sp_RegistrarPago
     @IdContrato  INT,
     @FechaPago   DATE,
@@ -119,7 +132,7 @@ BEGIN
 END;
 
 
--- 3.2  Resumen financiero de un cliente 
+--12  Resumen financiero de un cliente 
 CREATE OR ALTER PROC sp_ResumenCliente @IdCliente INT
 AS
 BEGIN
@@ -131,7 +144,7 @@ BEGIN
 END;
 GO
 
--- 3.3  Depositar en cuenta y generar transacción 
+--13  Depositar en cuenta y generar transacción 
 CREATE OR ALTER PROC sp_DepositoCuenta
     @IdCuenta INT,
     @Monto    MONEY
@@ -146,7 +159,7 @@ BEGIN
 END;
 GO
 
--- 3.4  Cerrar un contrato manualmente (cambia a Cancelado) 
+-- 14  Cerrar un contrato manualmente (cambia a Cancelado) 
 CREATE OR ALTER PROC sp_CerrarContrato @IdContrato INT
 AS
 BEGIN
@@ -156,7 +169,7 @@ BEGIN
 END;
 GO
 
--- 3.5  Reporte de operaciones de una agencia en un rango 
+-- 15  Reporte de operaciones de una agencia en un rango 
 CREATE OR ALTER PROC sp_ReporteAgencia
     @IdAgencia INT,
     @FechaIni  DATE,
@@ -176,10 +189,10 @@ BEGIN
     WHERE cu.id_agencia = @IdAgencia
       AND t.fecha BETWEEN @FechaIni AND @FechaFin;
 END;
-GO
+
 
 -- FUNCIONES CON VALORES DE TABLAS
--- 4.1  Historial completo de pagos por contrato 
+--16  Historial completo de pagos por contrato 
 CREATE OR ALTER FUNCTION tvf_HistorialPagosContrato (@IdContrato INT)
 RETURNS TABLE
 AS
@@ -189,7 +202,7 @@ RETURN (
     WHERE id_contrato = @IdContrato
 );
 
--- 4.2  Todas las cuentas de un cliente 
+--17  Todas las cuentas de un cliente 
 CREATE OR ALTER FUNCTION tvf_CuentasCliente (@IdCliente INT)
 RETURNS TABLE
 AS
@@ -199,7 +212,7 @@ RETURN (
     WHERE id_cliente = @IdCliente
 );
 
--- 4.3  Contratos de un cliente con pendiente calculado 
+--18  Contratos de un cliente con pendiente calculado 
 CREATE OR ALTER FUNCTION tvf_ContratosCliente (@IdCliente INT)
 RETURNS TABLE
 AS
@@ -212,7 +225,7 @@ RETURN (
     WHERE cs.id_cliente = @IdCliente
 );
 
--- 4.4  Transacciones en un periodo con datos del cliente 
+--19  Transacciones en un periodo con datos del cliente 
 CREATE OR ALTER FUNCTION tvf_TransaccionesPeriodo (@Desde DATE, @Hasta DATE)
 RETURNS TABLE
 AS
@@ -228,7 +241,7 @@ RETURN (
     WHERE t.fecha BETWEEN @Desde AND @Hasta
 );
 
--- 4.5  Vista de pagos pendientes (todas las cuotas sin cancelar) 
+--18  Vista de pagos pendientes (todas las cuotas sin cancelar) 
 CREATE OR ALTER FUNCTION tvf_PagosPendientes ()
 RETURNS TABLE
 AS
@@ -246,12 +259,13 @@ RETURN (
     WHERE ps.estado_pago IN ('Pendiente','Atrasado')
 );
 
+SELECT 
 
 -- //////////////////////////// DISPARADORES /////////////////////////////////////////
-/* Cree un trigger llamado trg_GenerarCuotas que, al insertar un nuevo préstamo en la tabla Prestamos, genere automáticamente
-los pagos mensuales (cuotas) del cliente, distribuyendo el monto total (con interés) en partes iguales durante el plazo del préstamo.
+/*19 Cree un trigger llamado trg_GenerarCuotas que, al insertar un nuevo préstamo en la tabla Prestamos, 
+genere automáticamente los pagos mensuales (cuotas) del cliente, distribuyendo el monto total (con interés)
+en partes iguales durante el plazo del préstamo.
 */
-
 ALTER TRIGGER trg_GenerarCuotas
 ON ContratoServicio
 AFTER INSERT
@@ -317,7 +331,7 @@ BEGIN
 END;
 
 /*
-Crear un trigger para actualizar automáticamente el estado de una cuota como "Pagado" y registrar la fecha del pago.
+20 Crear un trigger para actualizar automáticamente el estado de una cuota como "Pagado" y registrar la fecha del pago.
 */
 CREATE TRIGGER trg_ActualizarCuotaPagada
 ON PagoServicio
