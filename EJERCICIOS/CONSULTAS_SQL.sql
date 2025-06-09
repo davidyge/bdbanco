@@ -15,30 +15,20 @@ FROM
 WHERE csd.estado_cuota IN ('Pendiente','Atrasado') AND csd.fecha_programada < GETDATE()
 GROUP BY csd.id_contrato, c.nombre, c.apellido;
 
-
-SELECT * FROM ContratoServicioDet;
-
-SELECT * FROM PagoServicio;
-SELECT * FROM Cliente;
-
-SELECT * FROM Agencia;
-SELECT * FROM ContratoServicio;
-
-
 --3 Mostrar las 3 agencias con mayor monto contratado activo de forma descendente
 SELECT TOP (3) a.id_agencia, a.nombre_agencia, SUM(cs.monto_contratado) AS TotalActivo 
 FROM 
 Agencia a JOIN ContratoServicio cs ON a.id_agencia = cs.id_agencia 
 WHERE cs.estado_contrato = 'Activo' GROUP BY a.id_agencia, a.nombre_agencia ORDER BY TotalActivo DESC;
 
-
-
---4 Clientes sin movimientos en sus cuentas en los últimos 60 días
+--4 Mostar clientes sin movimientos en sus cuentas en los últimos 60 días
 SELECT DISTINCT c.id_cliente, c.nombre, c.Apellido 
 FROM 
 Cliente c JOIN Cuenta cu ON c.id_cliente = cu.id_cliente 
 LEFT JOIN TransaccionesCuenta t ON cu.id_cuenta = t.id_cuenta AND t.fecha >= DATEADD(DAY,-60,GETDATE()) 
 WHERE t.id_transacciones IS NULL;
+
+SELECT * FROM TransaccionesCuenta;
 
 --5 Rentabilidad por tipo de servicio (contratado vs. cobrado)
 SELECT sf.nombre_servicio, SUM(cs.monto_contratado) AS Contratado, SUM(ISNULL(ps.monto_pagado,0)) AS Cobrado 
