@@ -49,13 +49,14 @@ Detectar patrones de uso de productos y servicios
 Evaluar el riesgo y rentabilidad de los clientes según su historial transaccional
 
 Diagra entidad relación
-![BD-BANCO-2025-10](https://github.com/user-attachments/assets/3b89ebc1-8333-4ffa-8090-b3706992b084)
+![BD-BANCO-2025](https://github.com/user-attachments/assets/1cdcbc52-f1fe-40f9-8746-aec93f2e5d53)
 
 Diseño lógico
-![modelo_logico](https://github.com/user-attachments/assets/60612e59-fbc0-49c4-b029-818965be7e29)
+![diagrama_E-R](https://github.com/user-attachments/assets/5c805d92-a1a2-4ed8-a87f-2c482a9d6124)
 
 Modelo Físico
-![modelo_fisico](https://github.com/user-attachments/assets/07d46d9d-6e68-478d-ab82-6f5786210dcc)
+![modelo-fisico](https://github.com/user-attachments/assets/80988e82-b7c1-4dee-90c5-f4df1ee01f60)
+
 
 
 
