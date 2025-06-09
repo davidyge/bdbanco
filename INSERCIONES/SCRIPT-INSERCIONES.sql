@@ -162,4 +162,31 @@ INSERT INTO PagoServicio (id_pago, id_contrato, id_contratoDet, fecha_pago, mont
 
 DELETE ContratoServicioDet;
 SELECT * FROM ContratoServicioDet;
---INSERT INTO ContratoServicioDet (id_contrato, nro_cuota, fecha_programada, monto_cuota, estado_cuota, fecha_pagada) VALUES
+INSERT INTO ContratoServicioDet (id_contrato, nro_cuota, fecha_programada, monto_cuota, estado_cuota, fecha_pagada) VALUES
+(13,	1,	1,	2025-02-10,	937.50,	'Pagado',	2025-02-10),
+(14,	1,	2,	2025-03-10,	937.50,	'Pagado',	2025-03-10),
+(15,	1,	3,	2025-04-10,	937.50,	'Pendiente',	NULL),
+(16,	1,	4,	2025-05-10,	937.50,	'Pendiente',	NULL),
+(17,	1,	5,	2025-06-10,	937.50,	'Pendiente',	NULL),
+(18,	1,	6,	2025-07-10,	937.50,	'Pendiente',	NULL),
+(19,	6,	1,	2025-02-20,	825.00,	'Pendiente',	NULL),
+(20,	6,	2,	2025-03-20,	825.00,	'Pendiente',	NULL),
+(21,	6,	3,	2025-04-20,	825.00,	'Pendiente',	NULL),
+(22,	6,	4,	2025-05-20,	825.00,	'Pendiente',	NULL),
+(23,	5,	1,	2025-04-10,	1980.00,	'Pendiente',	NULL),
+(24,	5,	2,	2025-05-10,	1980.00,	'Pendiente',	NULL),
+(25,	5,	3,	2025-06-10,	1980.00,	'Pendiente',	NULL),
+(26,	5,	4,	2025-07-10,	1980.00,	'Pendiente',	NULL),
+(27,	5,	5,	2025-08-10,	1980.00,	'Pendiente',	NULL),
+(28,	4,	1,	2025-02-01,	1740.00,	'Pendiente',	NULL),
+(29,	4,	2,	2025-03-01,	1740.00,	'Pendiente',	NULL),
+(30,	4,	3,	2025-04-01,	1740.00,	'Pendiente',	NULL),
+(31,	4,	4,	2025-05-01,	1740.00,	'Pendiente',	NULL),
+(32,	4,	5,	2025-06-01,	1740.00,	'Pendiente',	NULL),
+(33,	3,	1,	2025-02-12,	1200.00,	'Pendiente',	NULL),
+(34,	3,	2,	2025-03-12,	1200.00,	'Pendiente',	NULL),
+(35,	3,	3,	2025-04-12,	1200.00,	'Pendiente',	NULL),
+(36,	3,	4,	2025-05-12,	1200.00,	'Pendiente',	NULL),
+(37,	2,	1,	2025-03-15,	2537.50,	'Pendiente',	NULL),
+(38,	2,	2,	2025-04-15,	2537.50,	'Pendiente',	NULL),
+(39,	2,	3,	2025-05-15,	2537.50,	'Pendiente',	NULL);
