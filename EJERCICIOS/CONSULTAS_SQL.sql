@@ -168,6 +168,7 @@ RETURN (
 SELECT * FROM dbo.fn_ResumenCuotasContrato(1);
 SELECT * FROM ContratoServicioDet WHERE id_contrato=1;
 
+-- PROCEDIMIENTOS ALMACENADOS
 --16  Crea un procedure para mostrar los días de atraso de un cliente a traves del Id cliente
 CREATE OR ALTER PROCEDURE sp_DiasAtrasoPorCliente
     @id_cliente INT
@@ -193,8 +194,6 @@ BEGIN
 END;
 
 EXEC sp_DiasAtrasoPorCliente @id_cliente = 1;
-
--- PROCEDIMIENTOS ALMACENADOS
 
 --17  Crear un procedimiento que muestre el resumen financiero de un cliente donde muestre su saldo total 
 -- y la cantidad de contratos activos.
