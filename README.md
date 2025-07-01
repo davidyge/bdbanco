@@ -55,7 +55,8 @@ Diseño lógico
 ![BANCO_DIAGRAM](https://github.com/user-attachments/assets/60cb7dd8-a432-4212-9fa8-f6157788a24b)
 
 Modelo Físico
-![modelo-fisico](https://github.com/user-attachments/assets/80988e82-b7c1-4dee-90c5-f4df1ee01f60)
+![BANCO-D-FISICO](https://github.com/user-attachments/assets/71fb7d8b-b1ba-49df-b58e-f0ef697a7436)
+
 
 
 
