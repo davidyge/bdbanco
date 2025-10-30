@@ -26,7 +26,9 @@ SQL Server · MySQL Workbench · DDL/DML SQL · Modelado Entidad–Relación · 
 Resultados esperados:
 
 -Identificar oportunidades de expansión regional.
+
 -Detectar clientes de alto valor según su comportamiento financiero.
+
 -Evaluar la penetración y uso de productos financieros por segmento.
 
 Diagra entidad relación
