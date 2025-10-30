@@ -1,52 +1,33 @@
-PERFIL FINANCIERO DE CLIENTES Y DISTRIBUCIÓN DE PRODUCTOS BANCARIOS POR REGIÓN
+PROYECTO DEL BOOTCAMP DE SQL SERVER
 
-Descripción del Sistema
+Análisis Financiero de Clientes y Distribución de Productos Bancarios por Región
 
-Este sistema de base de datos ha sido diseñado para gestionar y analizar de forma estructurada la información financiera de los clientes de una entidad bancaria. Permite registrar y consultar datos relacionados con:
-Los clientes (Natural, juridica)
-Sus cuentas bancarias
-Los productos financieros que adquieren
-Las agencias donde operan
-La región geográfica de atención
-Las transacciones realizadas por los clientes
+Proyecto desarrollado durante el Bootcamp de SQL Server, enfocado en el diseño, modelado y análisis de datos financieros para una entidad bancaria.
 
-Datos Almacenados:
+Diseñé y normalicé un modelo relacional completo que permite analizar el comportamiento financiero de los clientes, la distribución de productos bancarios y el movimiento transaccional según región y tipo de cuenta.
 
-El modelo contempla las siguientes entidades y relaciones clave:
-Clientes: Contiene información personal, tipo de cliente (natural o jurídica), sueldo mensual y cantidad de productos adquiridos.
-Cuentas: Asocia a los clientes con sus cuentas bancarias, incluyendo tipo de cuenta, número, monto y fecha de apertura.
-Productos: Describe los productos financieros ofrecidos por la entidad (créditos, tarjetas, fondos, etc.).
-AdquisicionProducto: Entidad intermedia que registra cada vez que un cliente adquiere un producto financiero. Incluye la agencia donde se adquirió el producto.
-Agencias: Representa las oficinas bancarias físicas donde se atiende a los clientes.
-Regiones: Define la ubicación geográfica de cada agencia.
-Transacciones: Registra todos los movimientos financieros realizados por los clientes (depósitos, retiros, transferencias, pagos, etc.), asociados a una cuenta específica, con fecha, tipo y monto de transacción.
+Objetivos del proyecto:
 
-Objetivo del Modelo:
+- Analizar el comportamiento financiero de los clientes según tipo (natural / jurídica).
+- Identificar regiones con mayor concentración de productos bancarios.
+- Determinar el volumen transaccional por tipo de cuenta y agencia.
+- Evaluar la antigüedad y rentabilidad promedio de las cuentas.
 
-El propósito principal de este sistema es permitir un análisis integral del comportamiento financiero de los clientes y la distribución de productos en función de variables como:
-Tipo de cliente, región geográfica, agencia bancaria, tipo de cuenta o producto, monto, frecuencia y antigüedad de las cuentas y transacciones.
-Esto facilita la toma de decisiones estratégicas basadas en datos reales.
+Tareas realizadas:
 
-Análisis y Consultas Clave:
+- Diseño del modelo Entidad–Relación en sus tres niveles: Conceptual, Lógico y Físico.
+- Normalización de tablas y definición de claves primarias y foráneas.
+- Creación de consultas SQL analíticas para responder preguntas de negocio.
+- Elaboración de vistas y estructuras relacionales optimizadas para análisis financiero.
 
-¿Cuántos productos tiene cada tipo de cliente?	cantidad_productos, tipo_cliente
-¿Ganan más las personas naturales o las jurídicas?	sueldo_mensual, tipo_cliente
-¿En qué regiones hay más cuentas activas?	cuentas, agencia, region
-¿Dónde se maneja más dinero, en cuentas corporativas o personales?	tipo_cuenta, monto
-¿Cuál es la antigüedad promedio de las cuentas por región?	fecha_apertura, region
-¿Qué agencias concentran más clientes y cuentas?	agencia, id_cliente
-¿Qué tipo de transacciones son más comunes por cliente o región? transacciones, tipo transacción, región
-¿Cuál es el monto promedio por transacción según el tipo de cuenta?	transacciones, monto, tipo_cuenta
-¿Qué clientes tienen mayor volumen de operaciones?	id_cliente, transacciones, monto
+Stack técnico:
+SQL Server · MySQL Workbench · DDL/DML SQL · Modelado Entidad–Relación · Consultas analíticas
 
-Resultados Esperados:
+Resultados esperados:
 
-Mejorar estrategias de marketing segmentadas por tipo de cliente y región
-Identificar zonas con baja penetración financiera
-Personalizar productos financieros según el comportamiento del cliente
-Analizar el crecimiento de clientes, cuentas y transacciones por año
-Detectar patrones de uso de productos y servicios
-Evaluar el riesgo y rentabilidad de los clientes según su historial transaccional
+-Identificar oportunidades de expansión regional.
+-Detectar clientes de alto valor según su comportamiento financiero.
+-Evaluar la penetración y uso de productos financieros por segmento.
 
 Diagra entidad relación
 ![BD-BANCO-DG](https://github.com/user-attachments/assets/d90d2c2c-a494-4982-b64d-994c77ab2074)
